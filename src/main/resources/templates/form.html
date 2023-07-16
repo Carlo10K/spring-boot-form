@@ -12,8 +12,10 @@
             <div>                                                           <!-- usuario se accede por el nombre de la clase enviada desde el controller
                                                                                  que en este caso es Usuario, pero aca se convierte en inicial mayuscula
                                                                                  y esto se hace para que no se borren los valores cuando le damos enviar
-                                                                                 y existe un error en la validacion-->
-                <input type="text" name="username" id="username" th:value="${usuario.username}">
+                                                                                 y existe un error en la validacion de esta manera th:value="${usuario.username}
+                                                                                 pero si queremos usar un alias como esta en el controlador accedemos por medio
+                                                                                 de ese alias-->
+                <input type="text" name="username" id="username" th:value="${user.username}">
             </div>
             <div th:if="${error != null && error.containsKey('username')}" th:text="${error.get('username')}"></div>
         </div>
@@ -26,8 +28,9 @@
         </div>
         <div>
             <label for="email">Email</label>
-            <div>
-                <input type="text" name="email" id="email" th:value="${usuario.email}">  <!-- lo dejo tipo texto para validar en el backend el tipo -->
+            <div>                                                    <!-- accediendo desde el alias de la otra manera seria
+                                                                        th:value="${usuario.username} con el nombre de la clase -->
+                <input type="text" name="email" id="email" th:value="${user.email}">  <!-- lo dejo tipo texto para validar en el backend el tipo -->
             </div>
             <div th:if="${error != null && error.containsKey('email')}" th:text="${error.get('email')}"></div>
         </div>
