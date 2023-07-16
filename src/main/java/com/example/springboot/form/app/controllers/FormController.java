@@ -18,12 +18,16 @@ public class FormController {
 
     @GetMapping("/form")
     public String form(Model model){
+        Usuario usuario = new Usuario();            //para enviar un usuario nulo por default a la vista
         model.addAttribute("titulo", "formulario usuario");
+        model.addAttribute("usuario", usuario);         //enviando un usuario nulo para que cuando se
+                                                                    //acceda a el desde la vista por primera vez no de error
         return "form";
     }
 
     @PostMapping("/form")  /*@Valid para usar la libreria de validacion jakarta, El objeto binding result de spring obtiene el resultado
-                            de la validacion y siempre debe ir despues del objeto a validar*/
+                            de la validacion y siempre debe ir despues del objeto a validar, el objeto Usuario se envia a la vista
+                            y para acceder a el se usa el mismo nombre de la clase pero con inicial mayuscula en este caso usuario*/
     public String procesar(@Valid Usuario usuario, BindingResult result, Model model /*@RequestParam String username, @RequestParam String password, @RequestParam String email*/){
 
         /* si la clase tiene los mismos nombres no es necesario inicializarla y se puede
