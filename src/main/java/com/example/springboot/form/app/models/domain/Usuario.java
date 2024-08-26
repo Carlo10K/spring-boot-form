@@ -1,20 +1,24 @@
 package com.example.springboot.form.app.models.domain;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class Usuario {
     private String uuid; /* campo que no se modifica y se pasa por medio de session*/
     /* @NotEmpty para la validacion, que el valor no sea null */
-    @NotEmpty
+    @NotEmpty(message = "El nombre no puede estar vacio")  /*mensaje de error*/
     private String name;
     @NotEmpty
     private String last_name;
     @NotEmpty
+    @Size(min = 3,max = 8)   /* para string para int es min y max*/
     private String username;
     @NotEmpty
     private String password;
     @NotEmpty
+    @Email    /* validacion de email */
     private String email;
 
     public String getUsername() {
