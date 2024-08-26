@@ -7,9 +7,13 @@
 <body>
     <h3 th:text="${titulo}"></h3>
     <ul>
+        <li th:text="${usuario.name}"></li>
+        <li th:text="${usuario.last_name}"></li>
         <li th:text="${usuario.username}"></li>
         <li th:text="${usuario.password}"></li>
         <li th:text="${usuario.email}"></li>
+        <!-- Este campo es propio del user no viene en los datos -->
+        <li th:text="${usuario.uuid}"></li>
     </ul>
 </body>
 </html>

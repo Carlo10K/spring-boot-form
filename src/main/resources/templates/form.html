@@ -5,8 +5,22 @@
     <title th:text="${titulo}"></title>
 </head>
 <body>
-    <h3 th:text="${titulo}"></h3>
-    <form th:action="@{/form}" method="post">
+    <h3 th:text="${titulo}"></h3>  <!-- para indicarle que el formulario va a acceder a este objeto "user" -->
+    <form th:action="@{/form}" th:object="${user}" method="post">
+        <div>
+            <label for="username">Nombre</label>
+            <div>
+                <input type="text" id="name" th:field="*{name}">
+            </div>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div>
+            <label for="username">Apellido</label>
+            <div>
+                <input type="text" id="last_name" th:field="*{last_name}"> 
+            </div>
+            <div th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}"></div>
+        </div>
         <div>
             <label for="username">Username</label>
             <div>                                                           <!-- usuario se accede por el nombre de la clase enviada desde el controller
@@ -15,24 +29,30 @@
                                                                                  y existe un error en la validacion de esta manera th:value="${usuario.username}
                                                                                  pero si queremos usar un alias como esta en el controlador accedemos por medio
                                                                                  de ese alias-->
-                <input type="text" name="username" id="username" th:value="${user.username}">
+               <!-- <input type="text" name="username" id="username" th:value="${user.username}"> -->
+                <input type="text" id="username" th:field="*{username}">  <!--username del objeto user -->
             </div>
-            <div th:if="${error != null && error.containsKey('username')}" th:text="${error.get('username')}"></div>
+            <!--<div th:if="${error != null && error.containsKey('username')}" th:text="${error.get('username')}"></div> si el error es pasado de forma manual -->
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div> <!-- si los errores se pasan de forma automatica -->
         </div>
         <div>
             <label for="password">Password</label>
-            <div>
-                <input type="password" name="password" id="password">       <!--no agrego el value porque no necesito mostrar la contraseña al usuario -->
+            <div>                                   <!-- accediendo a password del objeto user -->
+                <input type="password" id="password" th:field="*{password}">
+                <!--<input type="password" name="password" id="password">-->       <!--no agrego el value porque no necesito mostrar la contraseña al usuario -->
             </div>
-            <div th:if="${error != null && error.containsKey('password')}" th:text="${error.get('password')}"></div>
+            <!--<div th:if="${error != null && error.containsKey('password')}" th:text="${error.get('password')}"></div> si los errores se pasan de forma manual-->
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div> <!-- si los errores se pasan de forma automatica -->
         </div>
         <div>
             <label for="email">Email</label>
             <div>                                                    <!-- accediendo desde el alias de la otra manera seria
                                                                         th:value="${usuario.username} con el nombre de la clase -->
-                <input type="text" name="email" id="email" th:value="${user.email}">  <!-- lo dejo tipo texto para validar en el backend el tipo -->
-            </div>
-            <div th:if="${error != null && error.containsKey('email')}" th:text="${error.get('email')}"></div>
+                <!--<input type="text" name="email" id="email" th:value="${user.email}"> --> <!-- lo dejo tipo texto para validar en el backend el tipo -->
+                <input type="text" id="email" th:field="*{email}">
+            </div>                          <!--del objeto user definido en el form -->
+            <!--<div th:if="${error != null && error.containsKey('email')}" th:text="${error.get('email')}"></div> -->
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div> <!-- si los errores se pasan de forma automatica -->
         </div>
 
         <div>

@@ -8,18 +8,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
+@SessionAttributes("user")
 public class FormController {
 
     @GetMapping("/form")
     public String form(Model model){
         Usuario usuario = new Usuario();            //para enviar un usuario nulo por default a la vista
+        usuario.setName("Jhon"); //pasar datos por default
+        usuario.setLast_name("Doe");
+        usuario.setUuid("123.456.789-K");
         model.addAttribute("titulo", "formulario usuario");
         model.addAttribute("user", usuario);         //enviando un usuario nulo para que cuando se
                                                                     //acceda a el desde la vista por primera vez no de error
@@ -30,7 +31,7 @@ public class FormController {
                             de la validacion y siempre debe ir despues del objeto a validar, el objeto Usuario se envia a la vista
                             y para acceder a el se usa el mismo nombre de la clase pero con inicial mayuscula en este caso usuario
                             @ModelAttribute para cambiar el nombre con el que queremos pasar a la vista*/
-    public String procesar(@Valid @ModelAttribute("user") Usuario usuario, BindingResult result, Model model /*@RequestParam String username, @RequestParam String password, @RequestParam String email*/){
+    public String procesar(@Valid @ModelAttribute("user") Usuario usuario, BindingResult result, Model model, SessionStatus status /*para obtener el stado de sesion /*@RequestParam String username, @RequestParam String password, @RequestParam String email*/){
 
         /* si la clase tiene los mismos nombres no es necesario inicializarla y se puede
         poblar la clase
@@ -45,15 +46,19 @@ public class FormController {
         /* manejo de errores automaticos */
         if (result.hasErrors()){
             /* si el result retorna error aqui se maneja */
+
+            /* manejo de forma manual
             Map<String, String> errors = new HashMap<>();
             result.getFieldErrors().forEach(error -> {
                 errors.put(error.getField(), "El campo ".concat(error.getField()).concat(" ").concat(Objects.requireNonNull(error.getDefaultMessage())));
             });
             model.addAttribute("error", errors);
+            */
             return "form";
         }
 
         model.addAttribute("usuario", usuario);
+        status.setComplete(); //indicar que se termino la session
         return "resultado";
     }
 
